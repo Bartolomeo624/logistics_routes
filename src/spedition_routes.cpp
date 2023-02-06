@@ -1,7 +1,9 @@
 #include <string>
 #include <vector>
-#include "graph.h"
 #include <iostream>
+#include "graph.h"
+#include "args_parser.h"
+#include "strings.h"
 using namespace std;
 
 
@@ -18,7 +20,7 @@ int index_of_min(const list<int>& members, const int *values) {
     return index;
 }
 
-void djikstra(Graph graph, int source, int *previous, int *distance) {
+void calculate_shortest_paths(Graph graph, int source, int *previous, int *distance) {
     /**
      * Executes Dijkstra algorithm on the given Graph object for the specified source node. Calculates the shortest
      * distances to each node and makes it possible to deduce the shortest paths by updating the info of previous nodes.
@@ -55,7 +57,7 @@ void djikstra(Graph graph, int source, int *previous, int *distance) {
         // iterate over the neighbor list of the picked node
         list<node> :: iterator i;
         for(i = graph.neighborList[min_element].begin(); i != graph.neighborList[min_element].end(); i++) {
-            // for each neighbor update the shortest distance and previous node if condition is true
+            // for each neighbor update the shortest distance and previous node if the condition is true
             if (distance[min_element] + (i->weight) < distance[i->nodeId]) {
                 distance[i->nodeId] = distance[min_element] + (i->weight);
                 previous[i->nodeId] = min_element;
@@ -64,25 +66,41 @@ void djikstra(Graph graph, int source, int *previous, int *distance) {
     }
 }
 
-int main() {
-    int n = 6;
-    Graph g(n);
-    int distance[n], previous[n];
-    int start = 0;
+int main(int argc, char** argv) {
+    ArgsParser argsParser(argc, argv);
+    InputParser inputParser();
 
-    vector<vector<int>> edges = {
-            {0,1,5},
-            {0,2,4},
-            {1,3,2},
-            {2,3,4},
-            {3,4,1},
-            {4,5,2},
-            {0,5,3}
-    };
-    g.addEdges(edges);
-    djikstra(g, 0, previous, distance);
-    cout << 'a';
-    cout << 'a';
+    bool isInputCorrect = true;
+
+    if (argsParser.argExists("-h")){cout << HELP_TEXT;}
+    if (argsParser.argExists("-i")){
+        const std::string &filename = argsParser.getArg("-i");
+
+    } else {
+        cout << MISSING_I;
+        isInputCorrect = false;
+    }
+    if (argsParser.argExists("-o")){
+        // output file
+    } else {
+        cout << MISSING_O;
+        isInputCorrect = false;
+    }
+    if (argsParser.argExists("-c")){
+        // file with central node
+    } else {
+        cout << MISSING_C;
+        isInputCorrect = false;
+    }
+
+    if (!isInputCorrect) {
+        // input is incorrect - finish the program.
+        return 1;
+    }
+
+
+
+
 }
 
 
