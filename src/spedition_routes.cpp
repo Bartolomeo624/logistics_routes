@@ -1,9 +1,12 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <map>
 #include "graph.h"
 #include "args_parser.h"
 #include "strings.h"
+#include "input_output_parser.h"
+
 using namespace std;
 
 
@@ -66,41 +69,55 @@ void calculate_shortest_paths(Graph graph, int source, int *previous, int *dista
     }
 }
 
+void incorrect_input_error(bool& abort, const string& error_message) {
+    cout << error_message;
+    abort = true;
+}
+
 int main(int argc, char** argv) {
     ArgsParser argsParser(argc, argv);
-    InputParser inputParser();
+    IOParser io_parser;
+    vector<vector<int>> data;
+    string central;
+    int central_id;
+    bool abort = false;
 
-    bool isInputCorrect = true;
+    if (argsParser.argExists("-h")) cout << HELP_TEXT;
 
-    if (argsParser.argExists("-h")){cout << HELP_TEXT;}
     if (argsParser.argExists("-i")){
-        const std::string &filename = argsParser.getArg("-i");
+        // handle the input file
+        const string &filename = argsParser.getArg("-i");
+        io_parser.setInputFileName(filename);
+        data = io_parser.parse();
+    } else incorrect_input_error(abort, MISSING_I);
 
-    } else {
-        cout << MISSING_I;
-        isInputCorrect = false;
-    }
     if (argsParser.argExists("-o")){
-        // output file
-    } else {
-        cout << MISSING_O;
-        isInputCorrect = false;
-    }
-    if (argsParser.argExists("-c")){
-        // file with central node
-    } else {
-        cout << MISSING_C;
-        isInputCorrect = false;
-    }
+        // handle the output file
+        const string &filename = argsParser.getArg("-o");
+        io_parser.setOutputFileName(filename);
+    } else incorrect_input_error(abort, MISSING_O);
 
-    if (!isInputCorrect) {
+    if (argsParser.argExists("-c")){
+        // central node
+        central = argsParser.getArg("-c");
+        central_id = io_parser.setCentral(central);
+        if (central_id == -1) {
+            incorrect_input_error(abort, INCORRECT_C);
+        }
+    } else incorrect_input_error(abort, MISSING_C);
+
+    if (abort) {
         // input is incorrect - finish the program.
         return 1;
     }
 
+    int n = io_parser.getCityCount();
+    int distance[n], previous[n];
+    Graph graph(n);
+    graph.addEdges(data);
 
-
-
+    calculate_shortest_paths(graph, central_id, previous, distance);
+    io_parser.writeOutput(previous, distance);
 }
 
 

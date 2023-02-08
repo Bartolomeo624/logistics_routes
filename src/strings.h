@@ -22,5 +22,6 @@ const std::string HELP_TEXT = "\nPomoc do programu - Spedycja\n"
 const std::string MISSING_I = "Brakujacy agrument:\n-i (plik z danymi trasami spedycyjnymi)\n";
 const std::string MISSING_O = "Brakujacy agrument:\n-o (nazwa pliku wyjsciowego)\n";
 const std::string MISSING_C = "Brakujacy agrument:\n-c (centrala z ktorej program wyznaczy trasy)\n";
+const std::string INCORRECT_C = "Dana Centrala nie istnieje w danych wejsciowych"
 
 #endif //SPEDITION_COMPANY_STRINGS_H
