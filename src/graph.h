@@ -5,7 +5,6 @@
 #include <vector>
 #include "node.h"
 
-using namespace std;
 
 #ifndef SPEDITION_COMPANY_GRAPH_H
 #define SPEDITION_COMPANY_GRAPH_H
@@ -14,12 +13,10 @@ using namespace std;
 class Graph {
 public:
     int size;
-    list<node> *neighborList;
-
-public:
+    std::list<node> *neighborList;
     Graph(int size);
     void addEdge(int nodeId1, int nodeId2, int weight);
-    void addEdges(vector<vector<int>> edges);
+    void addEdges(std::vector<std::vector<int>> edges);
 };
 
 

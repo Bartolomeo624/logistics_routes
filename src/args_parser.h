@@ -6,7 +6,6 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
-using namespace std;
 
 #ifndef SPEDITION_COMPANY_ARGS_PARSER_H
 #define SPEDITION_COMPANY_ARGS_PARSER_H
@@ -14,10 +13,10 @@ using namespace std;
 class ArgsParser{
 public:
     ArgsParser(int &argc, char **argv);
-    bool argExists(const string& $arg);
-    string getArg(const string &arg);
+    bool argExists(const std::string& $arg);
+    std::string getArg(const std::string &arg);
 private:
-    vector<string> tokens;
+    std::vector<std::string> tokens;
 };
 
 #endif //SPEDITION_COMPANY_ARGS_PARSER_H

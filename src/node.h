@@ -4,7 +4,6 @@
 #include <list>
 #include <string>
 
-using namespace std;
 
 #ifndef SPEDITION_COMPANY_NODE_H
 #define SPEDITION_COMPANY_NODE_H

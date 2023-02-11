@@ -1,14 +1,9 @@
-#include <string>
-#include <vector>
-#include <iostream>
-#include <map>
+#include "input_output_parser.h"
 #include "graph.h"
 #include "args_parser.h"
 #include "strings.h"
-#include "input_output_parser.h"
 
 using namespace std;
-
 
 int index_of_min(const list<int>& members, const int *values) {
     int min = INT32_MAX;
@@ -82,13 +77,17 @@ int main(int argc, char** argv) {
     int central_id;
     bool abort = false;
 
-    if (argsParser.argExists("-h")) cout << HELP_TEXT;
+    if (argsParser.argExists("-h")){
+        cout << HELP_TEXT;
+        return 0; // terminate the program after displaying help
+    }
 
     if (argsParser.argExists("-i")){
         // handle the input file
         const string &filename = argsParser.getArg("-i");
         io_parser.setInputFileName(filename);
         data = io_parser.parse();
+        if(data.empty()) incorrect_input_error(abort, NO_DATA);
     } else incorrect_input_error(abort, MISSING_I);
 
     if (argsParser.argExists("-o")){
@@ -107,8 +106,7 @@ int main(int argc, char** argv) {
     } else incorrect_input_error(abort, MISSING_C);
 
     if (abort) {
-        // input is incorrect - finish the program.
-        return 1;
+        return 1; // input is incorrect - finish the program.
     }
 
     int n = io_parser.getCityCount();
@@ -118,6 +116,7 @@ int main(int argc, char** argv) {
 
     calculate_shortest_paths(graph, central_id, previous, distance);
     io_parser.writeOutput(previous, distance);
+    return 0;
 }
 
 

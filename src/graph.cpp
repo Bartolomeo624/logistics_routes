@@ -4,11 +4,10 @@
 
 #include "graph.h"
 
-using namespace std;
 
 Graph::Graph(int size) {
     this->size = size;
-    neighborList = new list<node>[size];
+    neighborList = new std::list<node>[size];
 }
 
 void Graph::addEdge(int nodeId1, int nodeId2, int weight) {
@@ -31,14 +30,14 @@ void Graph::addEdge(int nodeId1, int nodeId2, int weight) {
     }
 }
 
-void Graph::addEdges(vector<vector<int>> edges) {
+void Graph::addEdges(std::vector<std::vector<int>> edges) {
     /**
      * Add many edges to the graph using a single entry.
      *
      * @param edges vector of vectors shaped (n, 3) where n is a number of edges and each vector has three integers
      * where the first one represents the first node, the second one - the second node and the third is the weight
      */
-    for (vector<int> edge: edges) {
+    for (std::vector<int> edge: edges) {
         this->addEdge(edge[0], edge[1], edge[2]);
     }
 }
